@@ -45,9 +45,9 @@ class DetailActivity : AppCompatActivity() {
     private fun subtotal(reservation: Reservation): String {
         val total = reservation.clients.sumBy {
             it ?: return@sumBy 0
-            when {
-                dateFormatter.parse(it.birthDate).getAge()  >= 10 -> reservation.finalPrice
-                dateFormatter.parse(it.birthDate).getAge() in 3..9 -> reservation.finalPriceChild
+            when (it.birthDate) {
+                "adulto" -> reservation.finalPrice
+                "menor" -> reservation.finalPriceChild
                 else -> 0
             }
         }
@@ -57,9 +57,9 @@ class DetailActivity : AppCompatActivity() {
     private fun porPagarAliado(reservation: Reservation): String {
         val total = -reservation.clients.sumBy {
             it ?: return@sumBy 0
-            when {
-                dateFormatter.parse(it.birthDate).getAge()  >= 10 -> (reservation.finalPrice - reservation.minPrice)
-                dateFormatter.parse(it.birthDate).getAge() in 3..9 -> (reservation.finalPriceChild - reservation.minPriceChild)
+            when (it.birthDate) {
+                "adulto" -> (reservation.finalPrice - reservation.minPrice)
+                "menor" -> (reservation.finalPriceChild - reservation.minPriceChild)
                 else -> 0
             }
         } + reservation.paidAmount
@@ -69,9 +69,9 @@ class DetailActivity : AppCompatActivity() {
     private fun porPagar(reservation: Reservation): String {
         val total = reservation.clients.sumBy {
             it ?: return@sumBy 0
-            when {
-                dateFormatter.parse(it.birthDate).getAge()  >= 10 -> (reservation.finalPrice - reservation.minPrice)
-                dateFormatter.parse(it.birthDate).getAge() in 3..9 -> (reservation.finalPriceChild - reservation.minPriceChild)
+            when (it.birthDate) {
+                "adulto" -> (reservation.finalPrice - reservation.minPrice)
+                "menor" -> (reservation.finalPriceChild - reservation.minPriceChild)
                 else -> 0
             }
         } - reservation.paidAmount
@@ -81,9 +81,9 @@ class DetailActivity : AppCompatActivity() {
     private fun porCobrar(reservation: Reservation): String {
         val total = reservation.clients.sumBy {
             it ?: return@sumBy 0
-            when {
-                dateFormatter.parse(it.birthDate).getAge()  >= 10 -> reservation.finalPrice
-                dateFormatter.parse(it.birthDate).getAge() in 3..9 -> reservation.finalPriceChild
+            when (it.birthDate) {
+                "adulto" -> reservation.finalPrice
+                "menor" -> reservation.finalPriceChild
                 else -> 0
             }
         } + if (!reservation.transportIncluded) {
@@ -97,9 +97,9 @@ class DetailActivity : AppCompatActivity() {
     private fun calculateTotal(reservation: Reservation): String {
         val total = reservation.clients.sumBy {
             it ?: return@sumBy 0
-            when {
-                dateFormatter.parse(it.birthDate).getAge()  >= 10 -> reservation.finalPrice
-                dateFormatter.parse(it.birthDate).getAge() in 3..9 -> reservation.finalPriceChild
+            when (it.birthDate) {
+                "adulto" -> reservation.finalPrice
+                "menor" -> reservation.finalPriceChild
                 else -> 0
             }
         } + if (!reservation.transportIncluded) {

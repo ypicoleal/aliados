@@ -41,7 +41,7 @@ class EmailManager {
         Thread(Runnable {
             try {
                 val message = MimeMessage(session)
-                message.setFrom(InternetAddress("ypicoleal@gmail.com"))
+                message.setFrom(InternetAddress("benditabeach@gmail.com"))
                 message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to))
                 message.subject = subject

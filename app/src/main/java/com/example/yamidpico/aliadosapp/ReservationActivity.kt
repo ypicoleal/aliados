@@ -31,6 +31,9 @@ import kotlinx.android.synthetic.main.reservation_form.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.content.Intent
+import kotlinx.android.synthetic.main.client_form.*
+import kotlinx.android.synthetic.main.client_form.view.adulto
+import kotlinx.android.synthetic.main.client_form.view.menor
 
 class ReservationActivity : AppCompatActivity(), ChildEventListener, ClientListAdapter.OnDeleteClickListener,
     DatePickerDialog.OnDateSetListener {
@@ -46,11 +49,7 @@ class ReservationActivity : AppCompatActivity(), ChildEventListener, ClientListA
     private val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
     private val contentView by lazy {
-        View.inflate(this, R.layout.client_form, null).also {
-            it.birthdate.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) this.datePickerDialog.show()
-            }
-        }
+        View.inflate(this, R.layout.client_form, null)
     }
 
     private val emailManager by lazy { EmailManager() }
@@ -74,7 +73,11 @@ class ReservationActivity : AppCompatActivity(), ChildEventListener, ClientListA
             contentView.clientAdd.setOnClickListener {
                 val client = Client(
                     contentView.clientName.text.toString(),
-                    contentView.birthdate.text.toString(),
+                    when {
+                        adulto.isChecked -> "adulto"
+                        menor.isChecked -> "menor"
+                        else -> "infante"
+                    },
                     contentView.citizenship.text.toString(),
                     contentView.hotel.text.toString(),
                     contentView.document.text.toString(),
@@ -85,7 +88,7 @@ class ReservationActivity : AppCompatActivity(), ChildEventListener, ClientListA
                 dismiss()
 
                 contentView.clientName.text = null
-                contentView.birthdate.text = null
+                contentView.adulto.isChecked = true
                 contentView.citizenship.text = null
                 contentView.hotel.text = null
                 contentView.document.text = null
@@ -303,7 +306,6 @@ class ReservationActivity : AppCompatActivity(), ChildEventListener, ClientListA
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val date = GregorianCalendar(year, month, dayOfMonth).time
-        contentView.birthdate.setText(formatter.format(date))
         contentView.citizenship.requestFocus()
     }
 
